@@ -1,0 +1,10 @@
+[project]
+name = "project-03-personal-library-manager"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "ruff>=0.9.10",
+    "streamlit>=1.43.2",
+]
