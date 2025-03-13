@@ -13,7 +13,7 @@ def get_connection():
 # Database ko initialize karo, table agar exist nahi karti to create karo
 def initialize_db():
     conn = get_connection()
-    c = conn.cursor()
+    c = conn.cursor() # Cursor object banata hai jo SQL queries ko execute karne ke liye use hota hai.
     c.execute('''
         CREATE TABLE IF NOT EXISTS books (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -24,8 +24,10 @@ def initialize_db():
             read INTEGER
         )
     ''')
-    conn.commit()
-    conn.close()
+    conn.commit() # Database mein changes ko save karta hai taaki wo persist rahein
+    conn.close() # Database connection ko close karta hai taaki resources free ho jaayein
+    
+    
 
 # Database mein naya book add karne ke liye function
 def add_book_db(title, author, year, genre, read):
@@ -37,6 +39,8 @@ def add_book_db(title, author, year, genre, read):
     ''', (title, author, year, genre, int(read)))
     conn.commit()
     conn.close()
+    
+    
 
 # Database se book remove karne ke liye function (book id ke basis par)
 def remove_book_db(book_id):
@@ -101,10 +105,14 @@ def remove_book():
     books = fetch_all_books_db()
     if books:
         # Har book ko ek descriptive label ke saath list karte hain
-        options = {"Select a book": None}
+        options = {
+            "Select a book": None
+            }
+        
         for book in books:
             label = f"{book['title']} by {book['author']} ({book['year']})"
             options[label] = book['id']
+            
         selected = st.selectbox("Select a book to remove:", list(options.keys()))
         if selected != "Select a book" and st.button("❌ Remove Book"):
             book_id = options[selected]
